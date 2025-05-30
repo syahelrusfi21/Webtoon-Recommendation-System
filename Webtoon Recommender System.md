@@ -109,32 +109,21 @@ Berikut hasil sistem rekomendasi berbasis content-based filtering dengan input j
 | 6  | My Life as a Loser   | Drama     | My life was ruined after you bullied me in high school. So why do you get to be happy and successful? I'll give you a taste of your own medicine! Now you'll see what it felt like to be me... And you better be ready to pay the price if you want to return to your own body.                                | Rekomendasi        | 0.0932     |
 
 ## **Evaluation**
+Dalam proyek ini, tidak tersedia data interaksi pengguna untuk melakukan evaluasi kuantitatif menggunakan metrik seperti Precision@K atau Recall@K. Oleh karena itu, evaluasi dilakukan secara **kualitatif**, dengan cara menilai sejauh mana hasil rekomendasi yang dihasilkan oleh sistem terasa relevan berdasarkan isi dan genre Webtoon.
 
-Sistem rekomendasi ini menggunakan pendekatan **Content-Based Filtering** dengan menggabungkan fitur `Genre` dan `Summary` dari setiap Webtoon, yang kemudian direpresentasikan sebagai vektor menggunakan teknik **TF-IDF (Term Frequency-Inverse Document Frequency)**. Untuk menghitung kemiripan antar Webtoon, digunakan metrik **Cosine Similarity**:
+Sistem menggunakan **Cosine Similarity** pada tahap modeling untuk mengukur kemiripan antar Webtoon berdasarkan deskripsi dan genre. Namun perlu dicatat bahwa **Cosine Similarity bukan metrik evaluasi**, melainkan hanya digunakan sebagai dasar untuk menentukan item yang direkomendasikan.
 
-$$\text{Cosine Similarity}(A, B) = \frac{A \cdot B}{\|A\| \times \|B\|}$$
+Untuk menilai kualitas hasil, dilakukan analisis terhadap beberapa contoh rekomendasi, misalnya:
 
-Cosine Similarity bernilai antara 0 hingga 1. Semakin mendekati 1 berarti semakin mirip kontennya. Namun dalam praktiknya, terutama pada data teks seperti sinopsis Webtoon, nilai similarity sering kali kecil (< 0.2). Ini **bukan kesalahan**, melainkan sifat alami dari representasi teks yang kompleks dan bervariasi.
+- Input: `Lookism`, sebuah Webtoon bertema drama dan kehidupan sekolah.
+- Rekomendasi yang muncul seperti `Fluidum`, `City of Walls`, dan `My Life as a Loser`, secara umum masih mengandung elemen-elemen cerita personal, drama, dan konflik sosial, yang membuatnya cukup relevan dari segi konten.
 
-Karena tidak tersedia data interaksi pengguna, maka evaluasi dilakukan secara **kualitatif**. Untuk menilai apakah hasil rekomendasi memang relevan, kita ambil contoh:
+Dengan demikian, meskipun sistem tidak dievaluasi secara kuantitatif, evaluasi kualitatif menunjukkan bahwa pendekatan *content-based* mampu memberikan hasil yang masuk akal dan relevan.
 
-### Contoh Pencarian: *Lookism*
 
-**Judul Input:**
-- **Lookism** (Genre: Drama)  
-  _Daniel is an unattractive loner who wakes up in a different body. Now tall, handsome, and cooler than ever in his new form, Daniel aims to achieve everything he couldn't before. How far will he go to keep his body... and his secrets?_
+## **Kesimpulan**
+Proyek ini berhasil membangun sistem rekomendasi Webtoon menggunakan pendekatan *Content-Based Filtering* dengan *Cosine Similarity* untuk menentukan kemiripan antar judul berdasarkan genre dan ringkasan cerita.
 
-**Rekomendasi 1:**
-- **Fluidum** (Genre: Drama)  
-  _Jesse was born like every citizen in the Fluidum universe, spending their first 20 years shifting seamlessly between a male and female body. Now with only one year left until they must choose one body for the rest of their life, Jesse is questioning the unquestionable... why decide at all?_
+Meskipun nilai kemiripan relatif rendah secara numerik, sistem tetap mampu menghasilkan urutan rekomendasi yang secara kualitatif dinilai relevan. Evaluasi dilakukan secara kualitatif karena tidak tersedia data interaksi pengguna, dan hasilnya menunjukkan bahwa sistem dapat membantu pengguna menemukan Webtoon lain yang serupa dengan minat awalnya.
 
-**Rekomendasi 2:**
-- **My Life as a Loser** (Genre: Drama)  
-  _My life was ruined after you bullied me in high school. So why do you get to be happy and successful? I'll give you a taste of your own medicine! Now you'll see what it felt like to be me... And you better be ready to pay the price if you want to return to your own body._
-
-Dari ringkasan di atas, terlihat bahwa sistem berhasil merekomendasikan Webtoon dengan **tema yang senada**, seperti transformasi hidup, tekanan sosial, dan kehidupan sekolah. Hal ini menunjukkan bahwa sistem mampu mengidentifikasi kesamaan konten meskipun *similarity score* secara numerik kecil.
-
-### Kesimpulan
-- Pendekatan *content-based filtering* terbukti mampu memberikan rekomendasi Webtoon yang relevan berdasarkan kesamaan konten, khususnya genre dan ringkasan cerita.
-- Meskipun nilai *cosine similarity* tergolong rendah, metrik ini tetap efektif karena fokus utamanya adalah pada urutan kemiripan relatif antar judul.
-- Evaluasi secara kualitatif dapat memperkuat keabsahan sistem meski tanpa data eksplisit pengguna.
+Pendekatan ini cocok digunakan dalam kondisi terbatas seperti pada dataset ini, dan dapat dikembangkan lebih lanjut dengan *Collaborative Filtering* atau metrik evaluasi kuantitatif jika tersedia data tambahan di masa mendatang.
